@@ -5,8 +5,46 @@ set OPTIMIZATION_LEVEL=-Os
 
 rmdir /s /q bin 2>nul
 
+rem ==== Windows classic builds  =====
+
+call compiler.bat   bin\windows i386-pc-windows-msvc ^
+                    windows_i386  ^
+                    src\*.c ^
+                    -DARCHITECTURE_I386 ^
+                    -DPLATFORM_WINDOWS ^
+                    -DPLATFORM_WINDOWS_I386 ^
+                    %OPTIMIZATION_LEVEL%
+if errorlevel 1 goto :end
+
+call compiler.bat   bin\windows x86_64-pc-windows-msvc ^
+                    windows_amd64 ^
+                    src\*.c ^
+                    -DARCHITECTURE_AMD64 ^
+                    -DPLATFORM_WINDOWS ^
+                    -DPLATFORM_WINDOWS_AMD64 ^
+                    %OPTIMIZATION_LEVEL% 
+if errorlevel 1 goto :end
+
+call compiler.bat   bin\windows armv7a-pc-windows-msvc ^
+                    windows_arm32 ^
+                    src\*.c ^
+                    -DARCHITECTURE_ARM32 ^
+                    -DPLATFORM_WINDOWS ^
+                    -DPLATFORM_WINDOWS_ARM32 ^
+                    %OPTIMIZATION_LEVEL%
+if errorlevel 1 goto :end
+
+call compiler.bat   bin\windows aarch64-pc-windows-msvc ^
+                    windows_arm64 ^
+                    src\*.c ^
+                    -DARCHITECTURE_ARM64 ^
+                    -DPLATFORM_WINDOWS ^
+                    -DPLATFORM_WINDOWS_ARM64 ^
+                    %OPTIMIZATION_LEVEL%
+if errorlevel 1 goto :end
+
 rem ===== Windows payloads (built with linux triples, but PLATFORM_WINDOWS macros) =====
-call toolchain.bat  bin\windows i386-unknown-linux-gnu ^
+call pic-compiler.bat  bin\windows i386-unknown-linux-gnu ^
                     windows_i386  ^
                     src\*.c ^
                     -DARCHITECTURE_I386 ^
@@ -16,7 +54,7 @@ call toolchain.bat  bin\windows i386-unknown-linux-gnu ^
                     -fshort-wchar 
 if errorlevel 1 goto :end
 
-call toolchain.bat  bin\windows x86_64-unknown-linux-gnu ^
+call pic-compiler.bat  bin\windows x86_64-unknown-linux-gnu ^
                     windows_amd64 ^
                     src\*.c ^
                     -DARCHITECTURE_AMD64 ^
@@ -26,7 +64,7 @@ call toolchain.bat  bin\windows x86_64-unknown-linux-gnu ^
                     -fshort-wchar
 if errorlevel 1 goto :end
 
-call toolchain.bat  bin\windows thumbv7a-none-linux-gnueabi ^
+call pic-compiler.bat  bin\windows thumbv7a-none-linux-gnueabi ^
                     windows_arm32 ^
                     src\*.c ^
                     -DARCHITECTURE_ARM32 ^
@@ -34,8 +72,9 @@ call toolchain.bat  bin\windows thumbv7a-none-linux-gnueabi ^
                     -DPLATFORM_WINDOWS_ARM32 ^
                     %OPTIMIZATION_LEVEL% ^
                     -fshort-wchar
+if errorlevel 1 goto :end
 
-call toolchain.bat  bin\windows aarch64-unknown-linux-gnu ^
+call pic-compiler.bat  bin\windows aarch64-unknown-linux-gnu ^
                     windows_arm64 ^
                     src\*.c ^
                     -DARCHITECTURE_ARM64 ^
@@ -46,7 +85,7 @@ call toolchain.bat  bin\windows aarch64-unknown-linux-gnu ^
 if errorlevel 1 goto :end
 
 rem ===== Linux payloads =====
-call toolchain.bat  bin\linux i386-unknown-linux-gnu ^
+call pic-compiler.bat  bin\linux i386-unknown-linux-gnu ^
                     linux_i386 ^
                     src\*.c ^
                     -DARCHITECTURE_I386 ^
@@ -55,7 +94,7 @@ call toolchain.bat  bin\linux i386-unknown-linux-gnu ^
                     %OPTIMIZATION_LEVEL%
 if errorlevel 1 goto :end
 
-call toolchain.bat  bin\linux x86_64-unknown-linux-gnu ^
+call pic-compiler.bat  bin\linux x86_64-unknown-linux-gnu ^
                     linux_amd64 ^
                     src\*.c ^
                     -DARCHITECTURE_AMD64 ^
@@ -64,7 +103,7 @@ call toolchain.bat  bin\linux x86_64-unknown-linux-gnu ^
                     %OPTIMIZATION_LEVEL%
 if errorlevel 1 goto :end
 
-call toolchain.bat  bin\linux aarch64-unknown-linux-gnu ^
+call pic-compiler.bat  bin\linux aarch64-unknown-linux-gnu ^
                     linux_arm64 ^
                     src\*.c ^
                     -DARCHITECTURE_ARM64 ^

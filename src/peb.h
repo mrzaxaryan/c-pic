@@ -1,6 +1,8 @@
 #ifndef __PEB_H__
 #define __PEB_H__
 
+#if defined(PLATFORM_WINDOWS)
+
 #include "string.h"
 
 // Macro to get the containing record from a field pointer
@@ -69,10 +71,10 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS {
 
 // Process Environment Block
 typedef struct _PEB {
-	BOOL											InheritedAddressSpace;
-	BOOL											ReadImageFileExecOptions;
-	BOOL											BeingDebugged;
-	BOOL											Spare;
+	UINT8											InheritedAddressSpace;
+	UINT8											ReadImageFileExecOptions;
+	UINT8											BeingDebugged;
+	UINT8											Spare;
 	PVOID											Mutant;
 	PVOID											ImageBase;
 	PPEB_LDR_DATA									LoaderData;
@@ -85,6 +87,9 @@ PPEB GetCurrentPEB();
 // Function to resolve module handle by its name
 PVOID GetModuleHandleFromPEB(PPEB peb, const PWCHAR moduleName);
 
+#endif // PLATFORM_WINDOWS
+
 #endif // __PEB_H__
+
 
 

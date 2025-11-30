@@ -41,11 +41,9 @@ set "PATH=C:\Program Files\LLVM\bin;%PATH%"
 rem ===== Output paths =====
 if not exist "%OUTDIR%" mkdir "%OUTDIR%"
 
-set "OUTPUT=%OUTDIR%\%OUTNAME%.elf"
+set "OUTPUT=%OUTDIR%\%OUTNAME%.exe"
 set "BIN=%OUTDIR%\%OUTNAME%.bin"
-set "DISASM=%OUTDIR%\%OUTNAME%_disasm.txt"
-set "SECTIONS=%OUTDIR%\%OUTNAME%_sections.txt"
-set "STRINGS=%OUTDIR%\%OUTNAME%_strings.txt"
+set "DISASM=%OUTDIR%\%OUTNAME%.txt"
 
 rem ===== Compile =====
 clang -Qn -fuse-ld=lld ^
@@ -56,27 +54,19 @@ clang -Qn -fuse-ld=lld ^
     -fno-asynchronous-unwind-tables ^
     -fno-unwind-tables ^
     -fno-exceptions ^
-    -Wl,--gc-sections ^
     -fno-builtin ^
-    -Wl,-T,linker.script,-e,main ^
+    -Wl,/Entry:main,/SUBSYSTEM:CONSOLE ^
     -o "%OUTPUT%" ^
     !ARGS!
 
 if errorlevel 1 goto :end
 
 rem ===== Tools =====
-llvm-objcopy --dump-section=.text="%BIN%" "%OUTPUT%"
-llvm-objdump -d -s -j .text "%OUTPUT%" > "%DISASM%"
-llvm-objdump -h "%OUTPUT%" > "%SECTIONS%"
-llvm-strings "%BIN%" > "%STRINGS%"
+@REM llvm-objcopy --dump-section=.text="%BIN%" "%OUTPUT%"
+@REM llvm-objdump -d -s -j .text "%OUTPUT%" > "%DISASM%"
+@REM llvm-objdump -h "%OUTPUT%" >> "%DISASM%"
+@REM llvm-strings "%BIN%" >> "%DISASM%"
 
-call :filesize "%BIN%"
-echo %OUTNAME%: Position-independent binary size is %size% bytes
-goto :eof
-
-:filesize
-set "size=0"
-for %%A in (%~1) do set "size=%%~zA"
 exit /b
 
 :end
