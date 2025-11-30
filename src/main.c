@@ -2,7 +2,7 @@
 
 ENTRYPOINT INT32 main() {
 	
-	PCHAR message = "Hello world!\n";
+	PCHAR message = "Hello world!";
 
 	USIZE messageLength = GetStringLength(message);
 	WriteConsole(message, messageLength);
