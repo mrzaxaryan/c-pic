@@ -62,10 +62,10 @@ clang -Qn -fuse-ld=lld ^
 if errorlevel 1 goto :end
 
 rem ===== Tools =====
-@REM llvm-objcopy --dump-section=.text="%BIN%" "%OUTPUT%"
-@REM llvm-objdump -d -s -j .text "%OUTPUT%" > "%DISASM%"
-@REM llvm-objdump -h "%OUTPUT%" >> "%DISASM%"
-@REM llvm-strings "%BIN%" >> "%DISASM%"
+REM llvm-objcopy --dump-section=.text="%BIN%" "%OUTPUT%"
+REM llvm-objdump -d -s -j .text "%OUTPUT%" > "%DISASM%"
+REM llvm-objdump -h "%OUTPUT%" >> "%DISASM%"
+REM llvm-strings "%BIN%" >> "%DISASM%"
 
 exit /b
 

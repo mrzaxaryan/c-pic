@@ -5,15 +5,17 @@
 
 
 #define towlower(c) (((c) >= L'A' && (c) <= L'Z') ? ((c) + (L'a' - L'A')) : (c))
-#define tolower(c) (((c) >= 'A' && (c) <= 'Z') ? ((c) + ('a' - 'A')) : (c))
+#define TO_LOWER_CASE(c) (((c) >= 'A' && (c) <= 'Z') ? ((c) + ('a' - 'A')) : (c))
 
-// Custom case-insensitive string comparison
+// Case-insensitive string comparison
 BOOL CompareStringIgnoreCase(const PCHAR s1, const PCHAR s2);
 
-// Custom case-insensitive wide string comparison
+// Case-insensitive wide string comparison
 BOOL CompareWideStringIgnoreCase(const PWCHAR s1, const PWCHAR s2);
 
 // Get the length of a null-terminated string
 USIZE GetStringLength(const PCHAR str);
+
+INT32 String_FormatV(PCHAR s, PCHAR format, va_list args);
 
 #endif // __STRING_H__

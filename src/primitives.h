@@ -34,6 +34,9 @@ typedef unsigned long long UINT64, * PUINT64,** PPUINT64;
 typedef char CHAR, * PCHAR, ** PPCHAR;
 typedef unsigned char UCHAR, * PUCHAR;
 
+//typedef float FLOAT, * PFLOAT;
+typedef double DOUBLE, * PDOUBLE;
+
 #if defined(PLATFORM_WINDOWS)
     typedef UINT16 WCHAR, * PWCHAR, ** PPWCHAR;
     typedef INT32 BOOL, * PBOOL,** PPBOOL;
@@ -51,5 +54,10 @@ typedef unsigned char UCHAR, * PUCHAR;
     typedef UINT32 USIZE , * PUSIZE;
     typedef INT32 SSIZE , * PSSIZE;
 #endif 
+
+#define va_list                 __builtin_va_list
+#define va_start(ap, v)			__builtin_va_start(ap, v)
+#define va_arg(ap, t)			__builtin_va_arg(ap, t)
+#define va_end(ap)				__builtin_va_end(ap)
 
 #endif // __PRIMITIVES_H__

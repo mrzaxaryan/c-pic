@@ -1,11 +1,10 @@
 #include "environment.h"
 
+INT32 _fltused = 0;
+
 ENTRYPOINT INT32 main() {
 	
-	PCHAR message = "Hello world!\r\n";
-
-	USIZE messageLength = GetStringLength(message);
-	WriteConsole(message, messageLength);
+	PrintFormatedString("%s\r\n", "Hello world!");
 
 	ExitProcess(0);
 }
