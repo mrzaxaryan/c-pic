@@ -5,7 +5,7 @@
 // Returns the current process's PEB pointer
 PPEB GetCurrentPEB(VOID) {
     PPEB peb;
-#if defined(PLATFORM_WINDOWS_AMD64)
+#if defined(PLATFORM_WINDOWS_X86_64)
 
     __asm__("movq %%gs:%1, %0" : "=r" (peb) : "m" (*(PUINT64)(0x60)));
 
@@ -13,11 +13,11 @@ PPEB GetCurrentPEB(VOID) {
 
     __asm__("movl %%fs:%1, %0" : "=r" (peb) : "m" (*(PUINT32)(0x30)));
 
-#elif defined(PLATFORM_WINDOWS_ARM32)
+#elif defined(PLATFORM_WINDOWS_ARM7A)
 
     __asm__("ldr %0, [r9, %1]" : "=r"(peb) : "i"(0x30));
 
-#elif defined(PLATFORM_WINDOWS_ARM64)
+#elif defined(PLATFORM_WINDOWS_AARCH64)
 
 	__asm__("ldr %0, [x18, #%1]" : "=r"(peb) : "i"(0x60));
 

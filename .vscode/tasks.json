@@ -1,214 +1,673 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "clean",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if exist bin rmdir /s /q bin"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": []
-        },
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "prepare:windows",
+      "type": "shell",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "if",
+        "not",
+        "exist",
+        "bin\\windows",
+        "mkdir",
+        "bin\\windows"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
 
-        // ===== Windows PE executables (was compiler.bat) =====
+    {
+      "label": "prepare:linux",
+      "type": "shell",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "if",
+        "not",
+        "exist",
+        "bin\\linux",
+        "mkdir",
+        "bin\\linux"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
 
-        {
-            "label": "i386-pc-windows-msvc",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if not exist bin/windows mkdir bin/windows && clang -Wall -Wextra -Werror -Qn -fuse-ld=lld -target i386-pc-windows-msvc -nostdinc -nostartfiles -nodefaultlibs -nostdlib -fno-ident -mno-stack-arg-probe -fno-stack-check -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables -fno-unwind-tables -fno-builtin -Wl,/Entry:main,/SUBSYSTEM:CONSOLE -o bin/windows/windows_i386.exe src/*.c -DARCHITECTURE_I386 -DPLATFORM_WINDOWS -DPLATFORM_WINDOWS_I386 -Os -DDEBUG"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "x86_64-pc-windows-msvc",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if not exist bin/windows mkdir bin/windows && clang -Wall -Wextra -Werror -Qn -fuse-ld=lld -target x86_64-pc-windows-msvc -nostdinc -nostartfiles -nodefaultlibs -nostdlib -fno-ident -mno-stack-arg-probe -fno-stack-check -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables -fno-unwind-tables -fno-builtin -Wl,/Entry:main,/SUBSYSTEM:CONSOLE -o bin/windows/windows_amd64.exe src/*.c -DARCHITECTURE_AMD64 -DPLATFORM_WINDOWS -DPLATFORM_WINDOWS_AMD64 -Os -DDEBUG"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "armv7a-pc-windows-msvc",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if not exist bin/windows mkdir bin/windows && clang -Wall -Wextra -Werror -Qn -fuse-ld=lld -target armv7a-pc-windows-msvc -nostdinc -nostartfiles -nodefaultlibs -nostdlib -fno-ident -mno-stack-arg-probe -fno-stack-check -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables -fno-unwind-tables -fno-builtin -Wl,/Entry:main,/SUBSYSTEM:CONSOLE -o bin/windows/windows_arm32.exe src/*.c -DARCHITECTURE_ARM32 -DPLATFORM_WINDOWS -DPLATFORM_WINDOWS_ARM32 -Os"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "aarch64-pc-windows-msvc",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if not exist bin/windows mkdir bin/windows && clang -Wall -Wextra -Werror -Qn -fuse-ld=lld -target aarch64-pc-windows-msvc -nostdinc -nostartfiles -nodefaultlibs -nostdlib -fno-ident -mno-stack-arg-probe -fno-stack-check -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables -fno-unwind-tables -fno-builtin -Wl,/Entry:main,/SUBSYSTEM:CONSOLE -o bin/windows/windows_arm64.exe src/*.c -DARCHITECTURE_ARM64 -DPLATFORM_WINDOWS -DPLATFORM_WINDOWS_ARM64 -Os"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
+    {
+      "label": "i386-pc-windows-msvc",
+      "dependsOn": "prepare:windows",
+      "type": "process",
+      "command": "clang",
+      "args": [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Qn",
+        "-fuse-ld=lld",
+        "-nostdinc",
+        "-nostartfiles",
+        "-nodefaultlibs",
+        "-nostdlib",
+        "-fno-ident",
+        "-mno-stack-arg-probe",
+        "-fno-stack-check",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-unwind-tables",
+        "-fno-builtin",
+        "-Wl,/Entry:main,/SUBSYSTEM:CONSOLE",
 
-        // ===== Position‑independent ELF + .bin + .txt (was pic-compiler.bat) =====
-        // These build the ELF, then extract .text to a .bin and a disasm .txt.
+        "-target",
+        "i386-pc-windows-msvc",
+        "-o",
+        "bin/windows/windows_i386.exe",
 
-        {
-            "label": "i386-unknown-linux-gnu-win",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if not exist bin/windows mkdir bin/windows && clang -Wall -Wextra -Werror -Qn -fuse-ld=lld -target i386-unknown-linux-gnu -nostdinc -nostartfiles -nodefaultlibs -nostdlib -fno-ident -mno-stack-arg-probe -fno-stack-check -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables -fno-unwind-tables -Wl,--gc-sections -fno-builtin -Wl,-T,linker.script,-e,main -o bin/windows/windows_i386.elf src/*.c -DARCHITECTURE_I386 -DPLATFORM_WINDOWS -DPLATFORM_WINDOWS_I386 -Os -fshort-wchar && llvm-objcopy --dump-section=.text=bin/windows/windows_i386.bin bin/windows/windows_i386.elf && llvm-objdump -d -s -j .text bin/windows/windows_i386.elf > bin/windows/windows_i386.txt"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "x86_64-unknown-linux-gnu-win",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if not exist bin/windows mkdir bin/windows && clang -Wall -Wextra -Werror -Qn -fuse-ld=lld -target x86_64-unknown-linux-gnu -nostdinc -nostartfiles -nodefaultlibs -nostdlib -fno-ident -mno-stack-arg-probe -fno-stack-check -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables -fno-unwind-tables -Wl,--gc-sections -fno-builtin -Wl,-T,linker.script,-e,main -o bin/windows/windows_amd64.elf src/*.c -DARCHITECTURE_AMD64 -DPLATFORM_WINDOWS -DPLATFORM_WINDOWS_AMD64 -Os -fshort-wchar && llvm-objcopy --dump-section=.text=bin/windows/windows_amd64.bin bin/windows/windows_amd64.elf && llvm-objdump -d -s -j .text bin/windows/windows_amd64.elf > bin/windows/windows_amd64.txt"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "thumbv7a-none-linux-gnueabi-win",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if not exist bin/windows mkdir bin/windows && clang -Wall -Wextra -Werror -Qn -fuse-ld=lld -target thumbv7a-none-linux-gnueabi -nostdinc -nostartfiles -nodefaultlibs -nostdlib -fno-ident -mno-stack-arg-probe -fno-stack-check -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables -fno-unwind-tables -Wl,--gc-sections -fno-builtin -Wl,-T,linker.script,-e,main -o bin/windows/windows_arm32.elf src/*.c -DARCHITECTURE_ARM32 -DPLATFORM_WINDOWS -DPLATFORM_WINDOWS_ARM32 -Os -fshort-wchar && llvm-objcopy --dump-section=.text=bin/windows/windows_arm32.bin bin/windows/windows_arm32.elf && llvm-objdump -d -s -j .text bin/windows/windows_arm32.elf > bin/windows/windows_arm32.txt"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "aarch64-unknown-linux-gnu-win",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if not exist bin/windows mkdir bin/windows && clang -Wall -Wextra -Werror -Qn -fuse-ld=lld -target aarch64-unknown-linux-gnu -nostdinc -nostartfiles -nodefaultlibs -nostdlib -fno-ident -mno-stack-arg-probe -fno-stack-check -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables -fno-unwind-tables -Wl,--gc-sections -fno-builtin -Wl,-T,linker.script,-e,main -o bin/windows/windows_arm64.elf src/*.c -DARCHITECTURE_ARM64 -DPLATFORM_WINDOWS -DPLATFORM_WINDOWS_ARM64 -Os -fshort-wchar && llvm-objcopy --dump-section=.text=bin/windows/windows_arm64.bin bin/windows/windows_arm64.elf && llvm-objdump -d -s -j .text bin/windows/windows_arm64.elf > bin/windows/windows_arm64.txt"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
+        "-DARCHITECTURE_I386",
+        "-DPLATFORM_WINDOWS",
+        "-DPLATFORM_WINDOWS_I386",
+        "-Os",
+        "src/*.c"        
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
 
-        {
-            "label": "i386-unknown-linux-gnu",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if not exist bin/linux mkdir bin/linux && clang -Wall -Wextra -Werror -Qn -fuse-ld=lld -target i386-unknown-linux-gnu -nostdinc -nostartfiles -nodefaultlibs -nostdlib -fno-ident -mno-stack-arg-probe -fno-stack-check -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables -fno-unwind-tables -Wl,--gc-sections -fno-builtin -Wl,-T,linker.script,-e,main -o bin/linux/linux_i386.elf src/*.c -DARCHITECTURE_I386 -DPLATFORM_LINUX -DPLATFORM_LINUX_I386 -Os && llvm-objcopy --dump-section=.text=bin/linux/linux_i386.bin bin/linux/linux_i386.elf && llvm-objdump -d -s -j .text bin/linux/linux_i386.elf > bin/linux/linux_i386.txt"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "x86_64-unknown-linux-gnu",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if not exist bin/linux mkdir bin/linux && clang -Wall -Wextra -Werror -Qn -fuse-ld=lld -target x86_64-unknown-linux-gnu -nostdinc -nostartfiles -nodefaultlibs -nostdlib -fno-ident -mno-stack-arg-probe -fno-stack-check -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables -fno-unwind-tables -Wl,--gc-sections -fno-builtin -Wl,-T,linker.script,-e,main -o bin/linux/linux_amd64.elf src/*.c -DARCHITECTURE_AMD64 -DPLATFORM_LINUX -DPLATFORM_LINUX_AMD64 -Os && llvm-objcopy --dump-section=.text=bin/linux/linux_amd64.bin bin/linux/linux_amd64.elf && llvm-objdump -d -s -j .text bin/linux/linux_amd64.elf > bin/linux/linux_amd64.txt"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "aarch64-unknown-linux-gnu",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "if not exist bin/linux mkdir bin/linux && clang -Wall -Wextra -Werror -Qn -fuse-ld=lld -target aarch64-unknown-linux-gnu -nostdinc -nostartfiles -nodefaultlibs -nostdlib -fno-ident -mno-stack-arg-probe -fno-stack-check -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables -fno-unwind-tables -Wl,--gc-sections -fno-builtin -Wl,-T,linker.script,-e,main -o bin/linux/linux_arm64.elf src/*.c -DARCHITECTURE_ARM64 -DPLATFORM_LINUX -DPLATFORM_LINUX_ARM64 -Os && llvm-objcopy --dump-section=.text=bin/linux/linux_arm64.bin bin/linux/linux_arm64.elf && llvm-objdump -d -s -j .text bin/linux/linux_arm64.elf > bin/linux/linux_arm64.txt"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
+    {
+      "label": "x86_64-pc-windows-msvc",
+      "dependsOn": "prepare:windows",
+      "type": "process",
+      "command": "clang",
+      "args": [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Qn",
+        "-fuse-ld=lld",
+        "-nostdinc",
+        "-nostartfiles",
+        "-nodefaultlibs",
+        "-nostdlib",
+        "-fno-ident",
+        "-mno-stack-arg-probe",
+        "-fno-stack-check",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-unwind-tables",
+        "-fno-builtin",
+        "-Wl,/Entry:main,/SUBSYSTEM:CONSOLE",
 
-        // ===== Build All stays the same, now just depends on the new commands =====
+        "-target",
+        "x86_64-pc-windows-msvc",
+        "-o",
+        "bin/windows/windows_x86_64.exe",
 
-        {
-            "label": "Build All",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "clean",
+        "-DARCHITECTURE_X86_64",
+        "-DPLATFORM_WINDOWS",
+        "-DPLATFORM_WINDOWS_X86_64",
+        "-Os",
+        "src/*.c"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
 
-                "i386-unknown-linux-gnu-win",
-                "x86_64-unknown-linux-gnu-win",
-                "thumbv7a-none-linux-gnueabi-win",
-                "aarch64-unknown-linux-gnu-win",
+    {
+      "label": "armv7a-pc-windows-msvc",
+      "dependsOn": "prepare:windows",
+      "type": "process",
+      "command": "clang",
+      "args": [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Qn",
+        "-fuse-ld=lld",
+        "-nostdinc",
+        "-nostartfiles",
+        "-nodefaultlibs",
+        "-nostdlib",
+        "-fno-ident",
+        "-mno-stack-arg-probe",
+        "-fno-stack-check",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-unwind-tables",
+        "-fno-builtin",
+        "-Wl,/Entry:main,/SUBSYSTEM:CONSOLE",
 
-                "i386-unknown-linux-gnu",
-                "x86_64-unknown-linux-gnu",
-                "aarch64-unknown-linux-gnu"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        }
-    ]
+        "-target",
+        "armv7a-pc-windows-msvc",
+        "-o",
+        "bin/windows/windows_arm7a.exe",
+
+        "-DARCHITECTURE_ARM7A",
+        "-DPLATFORM_WINDOWS",
+        "-DPLATFORM_WINDOWS_ARM7A",
+        "-Os",
+        "src/*.c"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+
+    {
+      "label": "aarch64-pc-windows-msvc",
+      "dependsOn": "prepare:windows",
+      "type": "process",
+      "command": "clang",
+      "args": [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Qn",
+        "-fuse-ld=lld",
+        "-nostdinc",
+        "-nostartfiles",
+        "-nodefaultlibs",
+        "-nostdlib",
+        "-fno-ident",
+        "-mno-stack-arg-probe",
+        "-fno-stack-check",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-unwind-tables",
+        "-fno-builtin",
+        "-Wl,/Entry:main,/SUBSYSTEM:CONSOLE",
+
+        "-target",
+        "aarch64-pc-windows-msvc",
+        "-o",
+        "bin/windows/windows_aarch64.exe",
+
+        "-DARCHITECTURE_AARCH64",
+        "-DPLATFORM_WINDOWS",
+        "-DPLATFORM_WINDOWS_AARCH64",
+        "-Os",
+        "src/*.c"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+
+    {
+      "label": "i386-unknown-linux-gnu-win",
+      "type": "process",
+      "command": "clang",
+      "args": [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Qn",
+        "-fuse-ld=lld",
+        "-nostdinc",
+        "-nostartfiles",
+        "-nodefaultlibs",
+        "-nostdlib",
+        "-fno-ident",
+        "-mno-stack-arg-probe",
+        "-fno-stack-check",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-unwind-tables",
+        "-fno-builtin",
+        "-Wl,-T,linker.script,-e,main,--gc-sections",
+
+        "-target",
+        "i386-unknown-linux-gnu",
+        "-o",
+        "bin/windows/windows_i386.elf",
+
+        "-DARCHITECTURE_I386",
+        "-DPLATFORM_WINDOWS",
+        "-DPLATFORM_WINDOWS_I386",
+        "-Os",
+        "-fshort-wchar",
+        "src/*.c"          
+
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+
+    {
+      "label": "x86_64-unknown-linux-gnu-win",
+      "dependsOn": "prepare:windows",
+      "type": "process",
+      "command": "clang",
+      "args": [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Qn",
+        "-fuse-ld=lld",
+        "-nostdinc",
+        "-nostartfiles",
+        "-nodefaultlibs",
+        "-nostdlib",
+        "-fno-ident",
+        "-mno-stack-arg-probe",
+        "-fno-stack-check",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-unwind-tables",
+        "-fno-builtin",
+        "-Wl,-T,linker.script,-e,main,--gc-sections",
+
+        "-target", 
+         "x86_64-unknown-linux-gnu",
+        "-o",
+        "bin/windows/windows_x86_64.elf",
+
+        "-DARCHITECTURE_X86_64",
+        "-DPLATFORM_WINDOWS",
+        "-DPLATFORM_WINDOWS_X86_64",
+        "-Os",
+        "-fshort-wchar",
+        "src/*.c",
+        
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+
+    {
+      "label": "thumbv7a-none-linux-gnueabi-win",
+      "dependsOn": "prepare:windows",
+      "type": "process",
+      "command": "clang",
+      "args": [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Qn",
+        "-fuse-ld=lld",
+        "-nostdinc",
+        "-nostartfiles",
+        "-nodefaultlibs",
+        "-nostdlib",
+        "-fno-ident",
+        "-mno-stack-arg-probe",
+        "-fno-stack-check",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-unwind-tables",
+        "-fno-builtin",
+        "-Wl,-T,linker.script,-e,main,--gc-sections",
+
+        "-target", 
+         "thumbv7a-none-linux-gnueabi",
+        "-o",
+        "bin/windows/windows_arm32.elf",
+
+        "-DARCHITECTURE_ARM7A",
+        "-DPLATFORM_WINDOWS",
+        "-DPLATFORM_WINDOWS_ARM7A",
+        "-Os",
+        "-fshort-wchar",
+        "src/*.c",
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+
+    {
+      "label": "aarch64-unknown-linux-gnu-win",
+      "dependsOn": "prepare:windows",
+      "type": "process",
+      "command": "clang",
+      "args": [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Qn",
+        "-fuse-ld=lld",
+        "-nostdinc",
+        "-nostartfiles",
+        "-nodefaultlibs",
+        "-nostdlib",
+        "-fno-ident",
+        "-mno-stack-arg-probe",
+        "-fno-stack-check",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-unwind-tables",
+        "-fno-builtin",
+        "-Wl,-T,linker.script,-e,main,--gc-sections",
+
+        "-target", 
+         "aarch64-unknown-linux-gnu",
+        "-o",
+        "bin/windows/windows_aarch64.elf",
+
+        "-DARCHITECTURE_AARCH64",
+        "-DPLATFORM_WINDOWS",
+        "-DPLATFORM_WINDOWS_AARCH64",
+        "-Os",
+        "-fshort-wchar",
+        "src/*.c",
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+
+    {
+      "label": "i386-unknown-linux-gnu",
+      "dependsOn": "prepare:linux",
+      "type": "process",
+      "command": "clang",
+      "args": [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Qn",
+        "-fuse-ld=lld",
+        "-nostdinc",
+        "-nostartfiles",
+        "-nodefaultlibs",
+        "-nostdlib",
+        "-fno-ident",
+        "-mno-stack-arg-probe",
+        "-fno-stack-check",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-unwind-tables",
+        "-fno-builtin",
+        "-Wl,-T,linker.script,-e,main,--gc-sections",
+
+        "-target", 
+        "i386-unknown-linux-gnu",
+        "-o",
+        "bin/linux/linux_i386.elf",
+
+        "-DARCHITECTURE_I386",
+        "-DPLATFORM_LINUX",
+        "-DPLATFORM_LINUX_I386",
+        "-Os",
+        "src/*.c",
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+
+    {
+      "label": "x86_64-unknown-linux-gnu",
+      "dependsOn": "prepare:linux",
+      "type": "process",
+      "command": "clang",
+      "args": [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Qn",
+        "-fuse-ld=lld",
+        "-nostdinc",
+        "-nostartfiles",
+        "-nodefaultlibs",
+        "-nostdlib",
+        "-fno-ident",
+        "-mno-stack-arg-probe",
+        "-fno-stack-check",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-unwind-tables",
+        "-fno-builtin",
+        "-Wl,-T,linker.script,-e,main,--gc-sections",
+
+        "-target", 
+        "x86_64-unknown-linux-gnu",
+        "-o",
+        "bin/linux/linux_x86_64.elf",
+
+        "-DARCHITECTURE_X86_64",
+        "-DPLATFORM_LINUX",
+        "-DPLATFORM_LINUX_X86_64",
+        "-Os",
+        "src/*.c",
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+
+    {
+      "label": "aarch64-unknown-linux-gnu",
+      "dependsOn": "prepare:linux",
+      "type": "process",
+      "command": "clang",
+      "args": [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Qn",
+        "-fuse-ld=lld",
+        "-nostdinc",
+        "-nostartfiles",
+        "-nodefaultlibs",
+        "-nostdlib",
+        "-fno-ident",
+        "-mno-stack-arg-probe",
+        "-fno-stack-check",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-unwind-tables",
+        "-fno-builtin",
+        "-Wl,-T,linker.script,-e,main,--gc-sections",
+
+        "-target", 
+        "aarch64-unknown-linux-gnu",
+        "-o",
+        "bin/linux/linux_aarch64.elf",
+
+        "-DARCHITECTURE_AARCH64",
+        "-DPLATFORM_LINUX",
+        "-DPLATFORM_LINUX_AARCH64",
+        "-Os",
+        "src/*.c",
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+
+    {
+      "label": "extract:windows:i386",
+      "dependsOn": "i386-unknown-linux-gnu-win",
+      "type": "process",
+      "command": "llvm-objcopy",
+      "args": [
+        "--dump-section=.text=bin/windows/windows_i386.bin",
+        "bin/windows/windows_i386.elf"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+
+    {
+      "label": "extract:windows:x86_64",
+      "dependsOn": "x86_64-unknown-linux-gnu-win",
+      "type": "process",
+      "command": "llvm-objcopy",
+      "args": [
+        "--dump-section=.text=bin/windows/windows_x86_64.bin",
+        "bin/windows/windows_x86_64.elf"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+
+    {
+      "label": "extract:windows:arm32",
+      "dependsOn": "thumbv7a-none-linux-gnueabi-win",
+      "type": "process",
+      "command": "llvm-objcopy",
+      "args": [
+        "--dump-section=.text=bin/windows/windows_arm32.bin",
+        "bin/windows/windows_arm32.elf"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+
+    {
+      "label": "extract:windows:aarch64",
+      "dependsOn": "aarch64-unknown-linux-gnu-win",
+      "type": "process",
+      "command": "llvm-objcopy",
+      "args": [
+        "--dump-section=.text=bin/windows/windows_aarch64.bin",
+        "bin/windows/windows_aarch64.elf"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+
+    {
+      "label": "extract:linux:i386",
+      "dependsOn": "i386-unknown-linux-gnu",
+      "type": "process",
+      "command": "llvm-objcopy",
+      "args": [
+        "--dump-section=.text=bin/linux/linux_i386.bin",
+        "bin/linux/linux_i386.elf"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+
+    {
+      "label": "extract:linux:x86_64",
+      "dependsOn": "x86_64-unknown-linux-gnu",
+      "type": "process",
+      "command": "llvm-objcopy",
+      "args": [
+        "--dump-section=.text=bin/linux/linux_x86_64.bin",
+        "bin/linux/linux_x86_64.elf"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+
+    {
+      "label": "extract:linux:aarch64",
+      "dependsOn": "aarch64-unknown-linux-gnu",
+      "type": "process",
+      "command": "llvm-objcopy",
+      "args": [
+        "--dump-section=.text=bin/linux/linux_aarch64.bin",
+        "bin/linux/linux_aarch64.elf"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+
+    {
+      "label": "Build All",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "prepare:windows",
+        "prepare:linux",
+
+        // "i386-pc-windows-msvc",
+        // "x86_64-pc-windows-msvc",
+        // "armv7a-pc-windows-msvc",
+        // "aarch64-pc-windows-msvc",
+
+        // "i386-unknown-linux-gnu-win",
+        // "x86_64-unknown-linux-gnu-win",
+        // "thumbv7a-none-linux-gnueabi-win",
+        // "aarch64-unknown-linux-gnu-win",
+
+        // "i386-unknown-linux-gnu",
+        // "x86_64-unknown-linux-gnu",
+        // "aarch64-unknown-linux-gnu",
+
+        "extract:linux:i386",
+        "extract:linux:x86_64",
+        "extract:linux:aarch64",
+
+        "extract:windows:i386",
+        "extract:windows:x86_64",
+        "extract:windows:arm32",
+        "extract:windows:aarch64",
+
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
 }

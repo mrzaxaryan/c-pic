@@ -17,29 +17,29 @@ call compiler.bat   bin\windows i386-pc-windows-msvc ^
 if errorlevel 1 goto :end
 
 call compiler.bat   bin\windows x86_64-pc-windows-msvc ^
-                    windows_amd64 ^
+                    windows_x86_64 ^
                     src\*.c ^
-                    -DARCHITECTURE_AMD64 ^
+                    -DARCHITECTURE_X86_64 ^
                     -DPLATFORM_WINDOWS ^
-                    -DPLATFORM_WINDOWS_AMD64 ^
+                    -DPLATFORM_WINDOWS_X86_64 ^
                     %OPTIMIZATION_LEVEL% 
 if errorlevel 1 goto :end
 
 call compiler.bat   bin\windows armv7a-pc-windows-msvc ^
                     windows_arm32 ^
                     src\*.c ^
-                    -DARCHITECTURE_ARM32 ^
+                    -DARCHITECTURE_ARM7A ^
                     -DPLATFORM_WINDOWS ^
-                    -DPLATFORM_WINDOWS_ARM32 ^
+                    -DPLATFORM_WINDOWS_ARM7A ^
                     %OPTIMIZATION_LEVEL%
 if errorlevel 1 goto :end
 
 call compiler.bat   bin\windows aarch64-pc-windows-msvc ^
-                    windows_arm64 ^
+                    windows_aarch64 ^
                     src\*.c ^
-                    -DARCHITECTURE_ARM64 ^
+                    -DARCHITECTURE_AARCH64 ^
                     -DPLATFORM_WINDOWS ^
-                    -DPLATFORM_WINDOWS_ARM64 ^
+                    -DPLATFORM_WINDOWS_AARCH64 ^
                     %OPTIMIZATION_LEVEL%
 if errorlevel 1 goto :end
 
@@ -55,11 +55,11 @@ call pic-compiler.bat  bin\windows i386-unknown-linux-gnu ^
 if errorlevel 1 goto :end
 
 call pic-compiler.bat  bin\windows x86_64-unknown-linux-gnu ^
-                    windows_amd64 ^
+                    windows_x86_64 ^
                     src\*.c ^
-                    -DARCHITECTURE_AMD64 ^
+                    -DARCHITECTURE_X86_64 ^
                     -DPLATFORM_WINDOWS ^
-                    -DPLATFORM_WINDOWS_AMD64 ^
+                    -DPLATFORM_WINDOWS_X86_64 ^
                     %OPTIMIZATION_LEVEL% ^
                     -fshort-wchar
 if errorlevel 1 goto :end
@@ -67,19 +67,19 @@ if errorlevel 1 goto :end
 call pic-compiler.bat  bin\windows thumbv7a-none-linux-gnueabi ^
                     windows_arm32 ^
                     src\*.c ^
-                    -DARCHITECTURE_ARM32 ^
+                    -DARCHITECTURE_ARM7A ^
                     -DPLATFORM_WINDOWS ^
-                    -DPLATFORM_WINDOWS_ARM32 ^
+                    -DPLATFORM_WINDOWS_ARM7A ^
                     %OPTIMIZATION_LEVEL% ^
                     -fshort-wchar
 if errorlevel 1 goto :end
 
 call pic-compiler.bat  bin\windows aarch64-unknown-linux-gnu ^
-                    windows_arm64 ^
+                    windows_aarch64 ^
                     src\*.c ^
-                    -DARCHITECTURE_ARM64 ^
+                    -DARCHITECTURE_AARCH64 ^
                     -DPLATFORM_WINDOWS ^
-                    -DPLATFORM_WINDOWS_ARM64 ^
+                    -DPLATFORM_WINDOWS_AARCH64 ^
                     %OPTIMIZATION_LEVEL% ^
                     -fshort-wchar
 if errorlevel 1 goto :end
@@ -95,20 +95,20 @@ call pic-compiler.bat  bin\linux i386-unknown-linux-gnu ^
 if errorlevel 1 goto :end
 
 call pic-compiler.bat  bin\linux x86_64-unknown-linux-gnu ^
-                    linux_amd64 ^
+                    linux_x86_64 ^
                     src\*.c ^
-                    -DARCHITECTURE_AMD64 ^
+                    -DARCHITECTURE_X86_64 ^
                     -DPLATFORM_LINUX ^
-                    -DPLATFORM_LINUX_AMD64 ^
+                    -DPLATFORM_LINUX_X86_64 ^
                     %OPTIMIZATION_LEVEL%
 if errorlevel 1 goto :end
 
 call pic-compiler.bat  bin\linux aarch64-unknown-linux-gnu ^
-                    linux_arm64 ^
+                    linux_aarch64 ^
                     src\*.c ^
-                    -DARCHITECTURE_ARM64 ^
+                    -DARCHITECTURE_AARCH64 ^
                     -DPLATFORM_LINUX ^
-                    -DPLATFORM_LINUX_ARM64 ^
+                    -DPLATFORM_LINUX_AARCH64 ^
                     %OPTIMIZATION_LEVEL%
 if errorlevel 1 goto :end
 

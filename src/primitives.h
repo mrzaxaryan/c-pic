@@ -47,7 +47,7 @@ typedef double DOUBLE, * PDOUBLE;
     #error Unsupported platform
 #endif
 
-#if defined(ARCHITECTURE_AMD64) || defined(ARCHITECTURE_ARM64)
+#if defined(ARCHITECTURE_X86_64) || defined(ARCHITECTURE_AARCH64)
     typedef UINT64 USIZE , * PUSIZE;
     typedef INT64 SSIZE , * PSSIZE;
 #else

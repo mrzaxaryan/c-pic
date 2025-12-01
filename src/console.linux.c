@@ -5,7 +5,7 @@
 
 UINT32 WriteConsole(const PCHAR output,  USIZE outputLength) {
 
-#if defined(PLATFORM_LINUX_AMD64)
+#if defined(PLATFORM_LINUX_X86_64)
     register const CHAR *rsi asm("rsi") = output;
     register INT64 rdx asm("rdx") = outputLength;
     register INT64 rdi asm("rdi") = 1;
@@ -17,7 +17,7 @@ UINT32 WriteConsole(const PCHAR output,  USIZE outputLength) {
         : "r"(rdi), "r"(rsi), "r"(rdx)
         : "rcx", "r11", "memory", "cc"
     );
-#elif defined(PLATFORM_LINUX_ARM64)
+#elif defined(PLATFORM_LINUX_AARCH64)
 	register INT64 x0 __asm__("x0") = 1;      // fd = 1 (stdout)
     register const CHAR *x1 __asm__("x1") = output;
     register INT64 x2 __asm__("x2") = outputLength;

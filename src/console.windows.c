@@ -5,11 +5,11 @@
 
     #if defined(PLATFORM_WINDOWS_I386)
         #define WINAPI  __attribute__((stdcall))
-    #elif defined(PLATFORM_WINDOWS_AMD64) 
+    #elif defined(PLATFORM_WINDOWS_X86_64) 
         #define WINAPI  __attribute__((ms_abi))
-    #elif defined(PLATFORM_WINDOWS_ARM32)
+    #elif defined(PLATFORM_WINDOWS_ARM7A)
         #define WINAPI	
-    #elif defined(PLATFORM_WINDOWS_ARM64)
+    #elif defined(PLATFORM_WINDOWS_AARCH64)
         #define WINAPI  
     #endif
 

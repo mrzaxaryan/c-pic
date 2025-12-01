@@ -4,7 +4,7 @@
 
 NO_RETURN VOID ExitProcess(USIZE code) {
 
-#if defined(PLATFORM_LINUX_AMD64)
+#if defined(PLATFORM_LINUX_X86_64)
 
 	__asm__ volatile(
 		"mov $60, %%rax\n"  // syscall: exit = 60
@@ -15,7 +15,7 @@ NO_RETURN VOID ExitProcess(USIZE code) {
 		: "rax", "rdi"
 	);
 
-#elif defined(PLATFORM_LINUX_ARM64)
+#elif defined(PLATFORM_LINUX_AARCH64)
 
 	register long x0 __asm__("x0") = code; // exit code
 	register long x8 __asm__("x8") = 93;    // SYS_exit on aarch64
