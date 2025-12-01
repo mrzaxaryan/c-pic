@@ -234,7 +234,7 @@ VOID doubleToStr(DOUBLE num, PCHAR str, PINT32 index, INT32 precision, INT32 wid
 }
 
 // Function to convert wide string to narrow string
-VOID wildToStr(PWCHAR wstr, PCHAR str, PINT32 index, INT32 width)
+VOID wideToNarrowString(PWCHAR wstr, PCHAR str, PINT32 index, INT32 width)
 {
     INT32 destIndex = *index; // Start index for the destination string
     INT32 i = 0; // Local index for the wide string
@@ -563,7 +563,7 @@ INT32 String_FormatV(PCHAR s, PCHAR format, VA_LIST args) {
                     if(wstr == NULL) {
                         wstr = ((WCHAR[]){L'(',L'n',L'u',L'l',L'l',L')',L'\0'});  // Handle null wide string case
                     }
-                    wildToStr(wstr, s, &j, fieldWidth); // Convert the wide string to narrow string with specified formatting
+                    wideToNarrowString(wstr, s, &j, fieldWidth); // Convert the wide string to narrow string with specified formatting
                     continue;
                 }
                 else {
@@ -580,7 +580,7 @@ INT32 String_FormatV(PCHAR s, PCHAR format, VA_LIST args) {
                     if(wstr == NULL) {
                         wstr = ((WCHAR[]){L'(',L'n',L'u',L'l',L'l',L')',L'\0'});  // Handle null wide string case
                     }
-                    wildToStr(wstr, s, &j, fieldWidth); // Convert the wide string to narrow string with specified formatting
+                    wideToNarrowString(wstr, s, &j, fieldWidth); // Convert the wide string to narrow string with specified formatting
                     continue;
                 }
                 // Handle other long variants (lf, ld, lu, lld)
