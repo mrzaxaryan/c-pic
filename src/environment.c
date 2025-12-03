@@ -49,11 +49,6 @@ PVOID RebaseLiteral(PVOID p)
     USIZE pointer = (USIZE)p;
     USIZE currentBaseAddress = (USIZE)GetEnvironmentBaseAddress();
 
-    if (pointer < (USIZE)IMAGE_LINK_BASE)
-        return (PVOID)(pointer + currentBaseAddress - IMAGE_LINK_BASE);
-    if (currentBaseAddress == IMAGE_LINK_BASE)
-        return p; // Image is loaded by the OS loader.
-
     return (PVOID)(pointer + currentBaseAddress - IMAGE_LINK_BASE);
 }
 

@@ -661,12 +661,12 @@
       "dependsOrder": "parallel",
       "dependsOn": [
         "dump:windows:i386",
-        // "dump:windows:x86_64",
-        // "dump:windows:arm32",
-        // "dump:windows:aarch64",
-        // "dump:linux:i386",
-        // "dump:linux:x86_64",
-        // "dump:linux:aarch64",
+        "dump:windows:x86_64",
+        "dump:windows:arm32",
+        "dump:windows:aarch64",
+        "dump:linux:i386",
+        "dump:linux:x86_64",
+        "dump:linux:aarch64",
       ],
       "group": {
         "kind": "build",
