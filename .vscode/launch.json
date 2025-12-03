@@ -40,7 +40,7 @@
             "name": "Linux i386 (WSL)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/linux/linux_i386",
+            "program": "${workspaceFolder}/bin/linux/linux_i386.elf",
             "cwd": "${workspaceFolder}",
             "MIMode": "gdb",
             "pipeTransport": {
@@ -54,7 +54,7 @@
             "name": "Linux x86_64 (WSL)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/linux/linux_x86_64",
+            "program": "${workspaceFolder}/bin/linux/linux_x86_64.elf",
             "cwd": "${workspaceFolder}",
             "MIMode": "gdb",
             "pipeTransport": {
@@ -68,7 +68,7 @@
             "name": "Linux AARCH64 (WSL)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/linux/linux_aarch64",
+            "program": "${workspaceFolder}/bin/linux/linux_aarch64.elf",
             "cwd": "${workspaceFolder}",
             "MIMode": "gdb",
             "pipeTransport": {
