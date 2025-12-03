@@ -6,7 +6,6 @@
             "type": "lldb-dap",
             "request": "launch",
             "program": "${workspaceFolder}/bin/windows/windows_i386.exe",
-            "args": [],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "i386-pc-windows-gnu"
         },
