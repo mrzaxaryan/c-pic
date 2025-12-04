@@ -1,6 +1,6 @@
 #include "environment.h"
 
-#if defined(PLATFORM_PIC)
+#if defined(PLATFORM_WINDOWS_I386)
 
 PCHAR GetInstructionAddress(VOID)
 {
@@ -46,10 +46,30 @@ PCHAR ReversePatternSearch(PCHAR rip, const CHAR *pattern, UINT32 len)
 
 PVOID RebaseLiteral(PVOID p)
 {
-    USIZE pointer = (USIZE)p;
-    USIZE currentBaseAddress = (USIZE)GetEnvironmentBaseAddress();
+    PPEB peb = GetCurrentPEB();
 
-    return (PVOID)(pointer + currentBaseAddress - IMAGE_LINK_BASE);
+    // Go to loader data
+    PPEB_LDR_DATA ldr = peb->LoaderData;
+
+    // First module in InMemoryOrderModuleList is the EXE
+    PLIST_ENTRY list = &ldr->InMemoryOrderModuleList;
+    PLIST_ENTRY flink = list->Flink;
+
+    // Convert LIST_ENTRY → LDR_DATA_TABLE_ENTRY
+    PLDR_DATA_TABLE_ENTRY entry = CONTAINING_RECORD(flink, LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks);
+
+    USIZE EntryPoint = (USIZE)entry->EntryPoint;
+
+    if (EntryPoint == (USIZE)GetEnvironmentBaseAddress())
+    {
+        // Pointer is already relocated
+        return p;
+    }
+    else
+    {
+        // Pointer is within our module's image range
+        return (PVOID)((USIZE)p + GetEnvironmentBaseAddress() - IMAGE_LINK_BASE);
+    }
 }
 
 #endif // PLATFORM_WINDOWS_I386
