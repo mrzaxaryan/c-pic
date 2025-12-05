@@ -13,7 +13,6 @@
 // -----------------------------------------------------------------------------
 // Environment base management (used for PIC-style rebasing)
 // -----------------------------------------------------------------------------
-#define IMAGE_LINK_BASE ((USIZE)0x401000)
 
 typedef struct _ENVIRONMENT_DATA {
     PVOID BaseAddress;
@@ -22,6 +21,7 @@ typedef struct _ENVIRONMENT_DATA {
 
 VOID InitEnvironmentData(PENVIRONMENT_DATA envData, PVOID baseAddress);
 
+#define IMAGE_LINK_BASE ((USIZE)0x401000)
 #define GetEnvironmentData() ((PENVIRONMENT_DATA)(GetCurrentPEB()->SubSystemData))
 
 #define ENV_BASE ((USIZE)(GetEnvironmentData()->BaseAddress))
