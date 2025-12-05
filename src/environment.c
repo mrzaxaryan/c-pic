@@ -2,13 +2,12 @@
 
 #if defined(PLATFORM_WINDOWS_I386)
 
-PCHAR GetInstructionAddress(VOID)
+VOID InitEnvironmentData(PENVIRONMENT_DATA envData)
 {
-    return __builtin_return_address(0);
-}
+    PCHAR currentAddress = __builtin_return_address(0);																	// Get the return address of the caller function
+	UINT16 functionPrologue = 0x8955;																				// i386 function prologue: push ebp; mov ebp, esp
+	PCHAR functionStart = ReversePatternSearch(currentAddress, (PCHAR)&functionPrologue, sizeof(functionPrologue)); // Scan backward for function prologue
 
-VOID InitEnvironmentData(PENVIRONMENT_DATA envData, PVOID baseAddress)
-{
     PPEB peb = GetCurrentPEB();
 	peb->SubSystemData = (PVOID)envData;
 
@@ -18,8 +17,8 @@ VOID InitEnvironmentData(PENVIRONMENT_DATA envData, PVOID baseAddress)
 	PLDR_DATA_TABLE_ENTRY entry = CONTAINING_RECORD(flink, LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks);
 	USIZE EntryPoint = (USIZE)entry->EntryPoint;
 
-	BOOL shouldRelocate = (EntryPoint != (USIZE)baseAddress);
-	envData->BaseAddress = baseAddress;
+	BOOL shouldRelocate = (EntryPoint != (USIZE)functionStart);
+	envData->BaseAddress = functionStart;
 	envData->ShouldRelocate = shouldRelocate;
 }
 

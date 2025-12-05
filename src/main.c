@@ -5,11 +5,7 @@ ENTRYPOINT INT32 _start(VOID)
 {
 #if defined(PLATFORM_WINDOWS_I386)
 	ENVIRONMENT_DATA envData;
-	PCHAR currentAddress = GetInstructionAddress();																	// Get the return address of the caller function
-	UINT16 functionPrologue = 0x8955;																				// i386 function prologue: push ebp; mov ebp, esp
-	PCHAR functionStart = ReversePatternSearch(currentAddress, (PCHAR)&functionPrologue, sizeof(functionPrologue)); // Scan backward for function prologue
-
-	InitEnvironmentData(&envData, functionStart);
+	InitEnvironmentData(&envData);
 #endif
 
 	for (DOUBLE i = MAKE_DOUBLE(0); i < MAKE_DOUBLE(100000); i += MAKE_DOUBLE(0.1))

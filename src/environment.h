@@ -19,7 +19,7 @@ typedef struct _ENVIRONMENT_DATA {
     BOOL ShouldRelocate;
 } ENVIRONMENT_DATA, *PENVIRONMENT_DATA;
 
-VOID InitEnvironmentData(PENVIRONMENT_DATA envData, PVOID baseAddress);
+VOID InitEnvironmentData(PENVIRONMENT_DATA envData);
 
 #define IMAGE_LINK_BASE ((USIZE)0x401000)
 #define GetEnvironmentData() ((PENVIRONMENT_DATA)(GetCurrentPEB()->SubSystemData))
@@ -30,8 +30,6 @@ VOID InitEnvironmentData(PENVIRONMENT_DATA envData, PVOID baseAddress);
 #define UTF8(literal) ((PCHAR)RebaseLiteral((PVOID)(literal)))
 #define UTF16(literal) ((PWCHAR)RebaseLiteral((PVOID)(literal)))
 #define MAKE_DOUBLE(d) StringToDouble(UTF8(#d))
-// Get the caller's return address
-PCHAR GetInstructionAddress(VOID);
 
 // Scan backward in memory for a specific byte pattern
 PCHAR ReversePatternSearch(PCHAR rip, const CHAR *pattern, UINT32 len);
