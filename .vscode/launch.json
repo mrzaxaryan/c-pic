@@ -6,6 +6,8 @@
             "type": "lldb-dap",
             "request": "launch",
             "program": "${workspaceFolder}/bin/windows/windows_i386.exe",
+            "cwd": "${workspaceFolder}",
+            "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": "dump:windows:i386",
         },
         {
@@ -13,6 +15,8 @@
             "type": "lldb-dap",
             "request": "launch",
             "program": "${workspaceFolder}/bin/windows/windows_x86_64.exe",
+            "cwd": "${workspaceFolder}",
+            "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": "dump:windows:x86_64"
         },
         {
@@ -20,6 +24,8 @@
             "type": "lldb-dap",
             "request": "launch",
             "program": "${workspaceFolder}/bin/windows/windows_arm7a.exe",
+            "cwd": "${workspaceFolder}",
+            "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": "dump:windows:arm7a"
         },
         {
@@ -27,6 +33,8 @@
             "type": "lldb-dap",
             "request": "launch",
             "program": "${workspaceFolder}/bin/windows/windows_aarch64.exe",
+            "cwd": "${workspaceFolder}",
+            "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": "dump:windows:aarch64"
         },
         {
@@ -35,7 +43,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/linux/linux_i386.elf",
             "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
+            "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": "dump:linux:i386"
         },
         {
@@ -44,7 +52,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/linux/linux_x86_64.elf",
             "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
+            "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": "dump:linux:x86_64"
         },
         {
@@ -53,7 +61,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/linux/linux_aarch64.elf",
             "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
+            "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": "dump:linux:aarch64"
         }
     ]
