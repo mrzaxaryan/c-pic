@@ -13,13 +13,18 @@
 // -----------------------------------------------------------------------------
 // Environment base management (used for PIC-style rebasing)
 // -----------------------------------------------------------------------------
+
+typedef struct _ENVIRONMENT_DATA {
+    PVOID BaseAddress;
+    BOOL ShouldRelocate;
+} ENVIRONMENT_DATA, *PENVIRONMENT_DATA;
+
+VOID InitEnvironmentData(PENVIRONMENT_DATA envData, PVOID baseAddress);
+
 #define IMAGE_LINK_BASE ((USIZE)0x401000)
+#define GetEnvironmentData() ((PENVIRONMENT_DATA)(GetCurrentPEB()->SubSystemData))
 
-#define GetEnvironmentBaseAddress() (GetCurrentPEB()->SubSystemData)
-#define SetEnvironmentBaseAddress(v) (GetCurrentPEB()->SubSystemData = (PVOID)(v))
-
-// These macros are only meaningful when GetEnvironmentBaseAddress() is valid.
-#define ENV_BASE ((USIZE)(GetEnvironmentBaseAddress()))
+#define ENV_BASE ((USIZE)(GetEnvironmentData()->BaseAddress))
 #define ENV_DELTA (ENV_BASE - IMAGE_LINK_BASE)
 
 #define UTF8(literal) ((PCHAR)RebaseLiteral((PVOID)(literal)))
