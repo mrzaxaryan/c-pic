@@ -14,7 +14,7 @@ ENTRYPOINT INT32 _start(VOID)
 
 	for (DOUBLE i = MAKE_DOUBLE(0,0); i < MAKE_DOUBLE(1000,0); i += MAKE_DOUBLE(0,1))
 	{
-		PrintFormatedString(UTF8("Value: %.2f / %.2f\n"), i, MAKE_DOUBLE(100000,0));
+		PrintFormatedString(UTF8("Value: %.2f / %.2f\n"), i, MAKE_DOUBLE(1000,0));
 	}
 
 	ExitProcess(0);
