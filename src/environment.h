@@ -5,7 +5,7 @@
 
 // Create a DOUBLE value from integer and fractional parts
 DOUBLE MakeDouble(INT32 intPart, INT32 fracPart);
-#define MAKE_DOUBLE(intPart, fracPart) (MakeDouble((intPart), (fracPart)))
+#define MAKE_DOUBLE(intPart, fracPart) (MakeDouble((intPart), (1##fracPart)))
 
 #if defined(PLATFORM_WINDOWS)
 
